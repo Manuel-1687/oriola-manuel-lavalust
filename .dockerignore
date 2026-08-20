@@ -1,0 +1,9 @@
+git
+.github
+.gitignore
+node_modules
+vendor
+.env
+.env.*
+.DS_Store
+README.md

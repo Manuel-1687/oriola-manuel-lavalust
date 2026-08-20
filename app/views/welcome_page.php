@@ -6,218 +6,594 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to LavaLust</title>
-    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <title>Student Desk</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700;800&family=Unbounded:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
         :root {
-            --lava: #dd4814;
-            --lava-dim: #b83a10;
-            --lava-glow: rgba(221,72,20,0.15);
-            --lava-glow-strong: rgba(221,72,20,0.25);
-            --bg: #0a0a0b;
-            --bg2: #111113;
-            --bg3: #18181b;
-            --border: rgba(255,255,255,0.07);
-            --border-hot: rgba(221,72,20,0.35);
-            --text: #f4f4f5;
-            --text-muted: #71717a;
-            --text-dim: #3f3f46;
-            --mono: 'JetBrains Mono', monospace;
-            --sans: 'Unbounded', sans-serif;
+            --bg-page: #e9e1d2;
+            --panel-bg: #f3f1ee;
+            --panel-dark: #1e1e1e;
+            --line: #1d1d1d;
+            --soft-line: #d7d0c7;
+            --yellow: #f0c944;
+            --yellow-deep: #e6b82f;
+            --dark: #1a1a1a;
+            --text: #1e1e1e;
+            --muted: #5d5b57;
+            --shadow: #f0c944;
+            --chip: #0e0e0e;
+            --chip-text: #f3f1ee;
+            --blue: #0f4c81;
+            --red: #d34d38;
         }
 
-        html { scroll-behavior: smooth; }
+        * { box-sizing: border-box; }
 
         body {
-            font-family: var(--sans);
-            background: var(--bg);
-            color: var(--text);
+            margin: 0;
             min-height: 100vh;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-page);
+            color: var(--text);
+            position: relative;
             overflow-x: hidden;
         }
 
-        /* ── NOISE TEXTURE ── */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.6;
-        }
-
-        /* ── GRID BACKGROUND ── */
+        body::before,
         body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(var(--border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-            z-index: 0;
-            mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 100%);
-        }
-
-        /* ── GLOW ORBS ── */
-        .orb {
+            content: "";
             position: fixed;
             border-radius: 50%;
-            filter: blur(120px);
-            pointer-events: none;
             z-index: 0;
-        }
-        .orb-1 {
-            width: 600px; height: 600px;
-            top: -200px; left: -100px;
-            background: radial-gradient(circle, rgba(221,72,20,0.12) 0%, transparent 70%);
-        }
-        .orb-2 {
-            width: 400px; height: 400px;
-            top: 200px; right: -100px;
-            background: radial-gradient(circle, rgba(221,72,20,0.07) 0%, transparent 70%);
+            pointer-events: none;
         }
 
-        /* ── LAYOUT ── */
-        .wrap {
+        body::before {
+            width: 260px;
+            height: 260px;
+            background: rgba(240, 201, 68, 0.12);
+            left: -80px;
+            top: 40px;
+        }
+
+        body::after {
+            width: 240px;
+            height: 240px;
+            background: rgba(240, 201, 68, 0.10);
+            right: -70px;
+            bottom: 30px;
+        }
+
+        .page-shell {
             position: relative;
             z-index: 1;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 2rem;
+            width: min(1200px, calc(100% - 40px));
+            margin: 30px auto 40px;
+            border: 2px solid var(--line);
+            background: #f2f0ec;
+            box-shadow: 12px 12px 0 var(--yellow);
         }
 
-        /* ── NAV ── */
-        nav {
-            position: relative;
-            z-index: 10;
+        .topbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(12px);
-            background: rgba(10,10,11,0.6);
-            max-width: 100%;
+            padding: 14px 20px;
+            border-bottom: 2px solid var(--line);
+            background: rgba(255,255,255,0.08);
         }
 
-        .nav-logo {
+        .brand-wrap {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--text);
-            text-decoration: none;
+            gap: 12px;
+            margin-left: 10px;
         }
 
-        .nav-logo .flame {
-            width: 28px; height: 28px;
-            background: var(--lava);
-            border-radius: 6px;
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2c2c2c, #5a5a5a);
+            border: 2px solid #111;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-mark::before {
+            content: "";
+            position: absolute;
+            inset: 9px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f0c944, #d7a108);
+            box-shadow: inset 0 0 0 3px #111;
+        }
+
+        .brand-name {
+            font-family: 'Libre Baskerville', serif;
+            font-size: clamp(1.2rem, 2vw, 2rem);
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .home-btn {
+            border: 2px solid var(--line);
+            background: #f7f5f2;
+            padding: 9px 18px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            color: var(--text);
+        }
+
+        .home-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 0 var(--yellow);
+        }
+
+        .content {
+            padding: 34px 42px 42px;
+            min-height: 700px;
             display: flex;
+            align-items: stretch;
+            justify-content: center;
+        }
+
+        .screen {
+            width: 100%;
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .welcome-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 0.95fr;
+            gap: 40px;
+            align-items: center;
+            min-height: 600px;
+        }
+
+        .student-info {
+            padding-top: 32px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--yellow);
+            color: var(--dark);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.82rem;
+            padding: 8px 14px;
+            border: 2px solid var(--line);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.18);
+            margin-bottom: 18px;
+        }
+
+        .hero-title {
+            font-family: 'Libre Baskerville', serif;
+            font-weight: 700;
+            font-size: clamp(4rem, 7vw, 8rem);
+            line-height: 0.87;
+            letter-spacing: -0.08em;
+            margin: 0 0 26px;
+            max-width: 530px;
+        }
+
+        .tagline {
+            max-width: 520px;
+            font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+            line-height: 1.5;
+            color: var(--muted);
+            margin-bottom: 32px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--yellow-deep);
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(240, 201, 68, 0.12);
+        }
+
+        .profile-card {
+            align-self: center;
+            background: var(--panel-bg);
+            border: 2px solid var(--line);
+            padding: 26px 22px 24px;
+            box-shadow: 8px 8px 0 var(--yellow);
+            margin-top: 22px;
+        }
+
+        .profile-card .step {
+            display: inline-flex;
+            width: 30px;
+            height: 30px;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            box-shadow: 0 0 20px var(--lava-glow-strong);
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            transition: color 0.2s, background 0.2s;
-        }
-
-        .nav-links a:hover { color: var(--text); background: var(--bg3); }
-
-        .nav-links .btn-nav {
-            color: var(--text);
-            background: var(--lava);
-            padding: 0.4rem 1rem;
-            border-radius: 6px;
-            margin-left: 0.5rem;
-            transition: background 0.2s, box-shadow 0.2s;
-        }
-
-        .nav-links .btn-nav:hover {
-            background: var(--lava-dim);
-            box-shadow: 0 0 20px var(--lava-glow-strong);
-        }
-
-        /* ── HERO ── */
-        .hero {
-            padding: 7rem 2rem 5rem;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(221,72,20,0.1);
-            border: 1px solid var(--border-hot);
-            color: #f97316;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            padding: 0.35rem 0.9rem;
-            border-radius: 999px;
-            margin-bottom: 2rem;
-            font-family: var(--mono);
-        }
-
-        .badge::before {
-            content: '';
-            width: 6px; height: 6px;
-            background: var(--lava);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--lava);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--lava); }
-            50% { opacity: 0.5; box-shadow: 0 0 3px var(--lava); }
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
+            background: #111827;
+            color: #fff;
             font-weight: 800;
-            line-height: 1;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        .profile-card h3 {
+            font-family: 'Libre Baskerville', serif;
+            margin: 0 0 16px;
+            font-size: clamp(2.2rem, 3vw, 3.5rem);
+            line-height: 1.1;
+        }
+
+        .profile-card p {
+            margin: 0 0 18px;
+            color: var(--muted);
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            border: 2px solid #2d2d2d;
+            background: rgba(255,255,255,0.25);
+            min-height: 54px;
+            padding: 12px 14px;
+            font-size: 1.08rem;
+            color: var(--text);
+            outline: none;
+            margin-bottom: 18px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--yellow-deep);
+            box-shadow: 0 0 0 3px rgba(240, 201, 68, 0.18);
+        }
+
+        .open-btn {
+            width: 100%;
+            border: 2px solid var(--line);
+            background: var(--yellow);
+            color: var(--dark);
+            padding: 16px 18px;
+            min-height: 56px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .open-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 0 rgba(17,17,17,0.15);
+        }
+
+        .profile-screen {
+            padding-top: 18px;
+        }
+
+        .profile-header {
+            font-family: 'Libre Baskerville', serif;
+            font-size: clamp(3rem, 5vw, 6rem);
+            line-height: 0.92;
+            margin: 0 0 34px;
+            text-align: center;
+            letter-spacing: -0.06em;
+        }
+
+        .profile-body {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 34px;
+            align-items: start;
+            padding: 18px 18px 12px;
+            border: 2px solid var(--line);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .student-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding-top: 10px;
+        }
+
+        .avatar-wrap {
+            position: relative;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            margin-bottom: 18px;
+            border: 3px solid var(--line);
+            background: #d8d0c7;
+            overflow: hidden;
+            box-shadow: 0 0 0 8px rgba(0,0,0,0.02);
+        }
+
+        .avatar-wrap::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80') center/cover no-repeat;
+            filter: saturate(0.8) contrast(1.05);
+        }
+
+        .avatar-wrap::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--yellow);
+            right: 18px;
+            top: 18px;
+            border: 3px solid #1f1f1f;
+        }
+
+        .student-name {
+            margin: 0 0 14px;
+            font-family: 'Libre Baskerville', serif;
+            font-size: clamp(2rem, 2.8vw, 2.8rem);
+            line-height: 1.1;
             letter-spacing: -0.04em;
-            margin-bottom: 1.5rem;
         }
 
-        .hero h1 .word-lava { color: var(--lava); }
-        .hero h1 .word-lust {
-            color: transparent;
-            -webkit-text-stroke: 1.5px rgba(255,255,255,0.3);
+        .course-chip {
+            display: inline-block;
+            padding: 8px 12px;
+            background: var(--panel-dark);
+            color: var(--chip-text);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-weight: 800;
+            border: 2px solid var(--line);
         }
 
-        .hero-sub {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            max-width: 520px;
+        .info-grid {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(2, minmax(220px, 1fr));
+            padding: 6px 0 0;
+        }
+
+        .info-box {
+            min-height: 80px;
+            background: rgba(255,255,255,0.12);
+            border: 2px solid var(--line);
+            padding: 14px 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 1.05rem;
+        }
+
+        .info-box.full {
+            grid-column: 1 / -1;
+        }
+
+        .info-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: clamp(1rem, 1.4vw, 1.15rem);
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1.4;
+        }
+
+        @media (max-width: 900px) {
+            .welcome-grid,
+            .profile-body {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 24px 18px 28px;
+            }
+
+            .page-shell {
+                width: min(100% - 16px, 1200px);
+                margin-top: 14px;
+            }
+
+            .brand-name {
+                font-size: 1rem;
+            }
+
+            .welcome-grid {
+                gap: 12px;
+            }
+
+            .profile-card {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <div class="brand-wrap">
+                <div class="brand-mark" aria-hidden="true"></div>
+                <div class="brand-name">Clark's Student Desk</div>
+            </div>
+            <button class="home-btn" type="button" id="backHome">Home</button>
+        </header>
+
+        <main class="content">
+            <section id="welcomeScreen" class="screen active">
+                <div class="welcome-grid">
+                    <div class="student-info">
+                        <div class="tag">Student Information</div>
+                        <h1 class="hero-title">Welcome,<br>Student<br>User.</h1>
+                        <p class="tagline">A bright little corner for the essential details of a BS Information Technology student.</p>
+                        <div class="status-row"><span class="status-dot"></span><span>MCC / 3F4 / 3RD YEAR</span></div>
+                    </div>
+
+                    <div class="profile-card">
+                        <div class="step">01</div>
+                        <h3>Profile access</h3>
+                        <p>Verify the student name to open the full profile.</p>
+                        <form id="studentForm">
+                            <label for="studentName">Student Name</label>
+                            <input id="studentName" name="studentName" type="text" value="Manuel R. Oriola" placeholder="Enter student name" autocomplete="off">
+                            <button type="submit" class="open-btn">Open student profile</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <section id="profileScreen" class="screen profile-screen">
+                <h2 class="profile-header">Student profile</h2>
+
+                <div class="profile-body">
+                    <aside class="student-card">
+                        <div class="avatar-wrap" aria-label="Student avatar"></div>
+                        <h3 class="student-name" id="profileName">Manuel R. Oriola</h3>
+                        <div class="course-chip" id="profileCourse">BS Information Technology</div>
+                    </aside>
+
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="info-label">Student ID</div>
+                            <div class="info-value" id="studentId">MCC2024-00268</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Name</div>
+                            <div class="info-value" id="nameValue">Manuel R. Oriola</div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="info-label">Course</div>
+                            <div class="info-value" id="courseValue">BS Information Technology</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Year level</div>
+                            <div class="info-value" id="yearValue">3rd Year</div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="info-label">Section</div>
+                            <div class="info-value" id="sectionValue">3F4</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Email</div>
+                            <div class="info-value" id="emailValue">Oriolapardz@gmail.com</div>
+                        </div>
+
+                        <div class="info-box full">
+                            <div class="info-label">Address</div>
+                            <div class="info-value" id="addressValue">Ibaba, East, Calapan City</div>
+                        </div>
+
+                        <div class="info-box full">
+                            <div class="info-label">Contact</div>
+                            <div class="info-value" id="contactValue">09120763768</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const profileScreen = document.getElementById('profileScreen');
+        const studentForm = document.getElementById('studentForm');
+        const studentNameInput = document.getElementById('studentName');
+        const backHomeBtn = document.getElementById('backHome');
+
+        const profileName = document.getElementById('profileName');
+        const profileCourse = document.getElementById('profileCourse');
+        const nameValue = document.getElementById('nameValue');
+        const courseValue = document.getElementById('courseValue');
+        const yearValue = document.getElementById('yearValue');
+        const sectionValue = document.getElementById('sectionValue');
+        const emailValue = document.getElementById('emailValue');
+        const addressValue = document.getElementById('addressValue');
+        const contactValue = document.getElementById('contactValue');
+
+        const defaultStudent = {
+            name: 'Manuel R. Oriola',
+            course: 'BS Information Technology',
+            year: '3rd Year',
+            section: '3F4',
+            email: 'Oriolapardz@gmail.com',
+            address: 'Ibaba, East, Calapan City',
+            contact: '09120763768'
+        };
+
+        function showProfile(name) {
+            const student = name && name.trim() ? name.trim() : defaultStudent.name;
+            profileName.textContent = student;
+            nameValue.textContent = student;
+            profileCourse.textContent = defaultStudent.course;
+            courseValue.textContent = defaultStudent.course;
+            yearValue.textContent = defaultStudent.year;
+            sectionValue.textContent = defaultStudent.section;
+            emailValue.textContent = defaultStudent.email;
+            addressValue.textContent = defaultStudent.address;
+            contactValue.textContent = defaultStudent.contact;
+
+            welcomeScreen.classList.remove('active');
+            profileScreen.classList.add('active');
+        }
+
+        function showHome() {
+            profileScreen.classList.remove('active');
+            welcomeScreen.classList.add('active');
+        }
+
+        studentForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            showProfile(studentNameInput.value);
+        });
+
+        backHomeBtn.addEventListener('click', showHome);
+    </script>
+</body>
+</html>
             margin: 0 auto 2.5rem;
             line-height: 1.7;
             font-weight: 400;

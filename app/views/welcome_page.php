@@ -6,27 +6,26 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Desk</title>
+    <title>MANUEL STUDENT DESK</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-page: #e9e1d2;
-            --panel-bg: #f3f1ee;
-            --panel-dark: #1e1e1e;
+            --bg-page: #dfe4ea;
+            --panel-bg: #f3f4f6;
+            --panel-dark: #111827;
             --line: #1d1d1d;
-            --soft-line: #d7d0c7;
-            --yellow: #f0c944;
-            --yellow-deep: #e6b82f;
-            --dark: #1a1a1a;
-            --text: #1e1e1e;
-            --muted: #5d5b57;
-            --shadow: #f0c944;
-            --chip: #0e0e0e;
-            --chip-text: #f3f1ee;
-            --blue: #0f4c81;
-            --red: #d34d38;
+            --soft-line: #c7ced8;
+            --accent-red: #d93a2f;
+            --accent-blue: #1c4d9c;
+            --chrome: #c7ccd1;
+            --chrome-dark: #8b939b;
+            --dark: #101827;
+            --text: #1e2430;
+            --muted: #4f5a69;
+            --chip-text: #f9fafb;
+            --shadow: rgba(17, 24, 39, 0.18);
         }
 
         * { box-sizing: border-box; }
@@ -35,7 +34,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             margin: 0;
             min-height: 100vh;
             font-family: 'DM Sans', sans-serif;
-            background: var(--bg-page);
+            background: linear-gradient(135deg, #dfe4ea 0%, #ccd5df 100%);
             color: var(--text);
             position: relative;
             overflow-x: hidden;
@@ -51,17 +50,17 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         }
 
         body::before {
-            width: 260px;
-            height: 260px;
-            background: rgba(240, 201, 68, 0.12);
-            left: -80px;
-            top: 40px;
+            width: 280px;
+            height: 280px;
+            background: rgba(28, 77, 156, 0.12);
+            left: -60px;
+            top: 30px;
         }
 
         body::after {
-            width: 240px;
-            height: 240px;
-            background: rgba(240, 201, 68, 0.10);
+            width: 260px;
+            height: 260px;
+            background: rgba(217, 58, 47, 0.10);
             right: -70px;
             bottom: 30px;
         }
@@ -72,8 +71,8 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             width: min(1200px, calc(100% - 40px));
             margin: 30px auto 40px;
             border: 2px solid var(--line);
-            background: #f2f0ec;
-            box-shadow: 12px 12px 0 var(--yellow);
+            background: #eff2f5;
+            box-shadow: 12px 12px 0 rgba(28, 77, 156, 0.36);
         }
 
         .topbar {
@@ -167,8 +166,8 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
         .tag {
             display: inline-block;
-            background: var(--yellow);
-            color: var(--dark);
+            background: linear-gradient(135deg, var(--accent-red), #f35d4d);
+            color: #fff;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.12em;
@@ -212,17 +211,17 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         .status-dot {
             width: 12px;
             height: 12px;
-            background: var(--yellow-deep);
+            background: var(--accent-blue);
             border-radius: 50%;
-            box-shadow: 0 0 0 3px rgba(240, 201, 68, 0.12);
+            box-shadow: 0 0 0 3px rgba(28, 77, 156, 0.12);
         }
 
         .profile-card {
             align-self: center;
-            background: var(--panel-bg);
+            background: linear-gradient(180deg, #f5f5f5 0%, #e9edf3 100%);
             border: 2px solid var(--line);
             padding: 26px 22px 24px;
-            box-shadow: 8px 8px 0 var(--yellow);
+            box-shadow: 8px 8px 0 rgba(217, 58, 47, 0.38);
             margin-top: 22px;
         }
 
@@ -232,7 +231,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             height: 30px;
             align-items: center;
             justify-content: center;
-            background: #111827;
+            background: linear-gradient(135deg, var(--accent-red), #f04b42);
             color: #fff;
             font-weight: 800;
             border-radius: 6px;
@@ -245,6 +244,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             margin: 0 0 16px;
             font-size: clamp(2.2rem, 3vw, 3.5rem);
             line-height: 1.1;
+            color: var(--dark);
         }
 
         .profile-card p {
@@ -285,8 +285,8 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         .open-btn {
             width: 100%;
             border: 2px solid var(--line);
-            background: var(--yellow);
-            color: var(--dark);
+            background: linear-gradient(135deg, var(--accent-blue), #4d78c8);
+            color: #fff;
             padding: 16px 18px;
             min-height: 56px;
             font-size: 1.1rem;
@@ -375,7 +375,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         .course-chip {
             display: inline-block;
             padding: 8px 12px;
-            background: var(--panel-dark);
+            background: linear-gradient(135deg, var(--accent-red), #ef5f52);
             color: var(--chip-text);
             font-size: 0.72rem;
             text-transform: uppercase;
@@ -456,7 +456,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         <header class="topbar">
             <div class="brand-wrap">
                 <div class="brand-mark" aria-hidden="true"></div>
-                <div class="brand-name">Clark's Student Desk</div>
+                <div class="brand-name">MANUEL STUDENT DESK</div>
             </div>
             <button class="home-btn" type="button" id="backHome">Home</button>
         </header>

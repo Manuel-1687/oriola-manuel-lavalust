@@ -618,11 +618,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
                 return;
             }
 
-            if (value.toLowerCase() !== defaultStudent.name.toLowerCase()) {
-                showError('Access denied. Enter the correct student name to continue.');
-                return;
-            }
-
             formError.textContent = '';
             formError.classList.remove('show');
             showProfile(value);

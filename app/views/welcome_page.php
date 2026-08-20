@@ -627,6 +627,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
     </script>
 </body>
 </html>
+<?php exit; ?>
             margin: 0 auto 2.5rem;
             line-height: 1.7;
             font-weight: 400;

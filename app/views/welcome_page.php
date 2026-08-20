@@ -278,8 +278,23 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
         }
 
         input[type="text"]:focus {
-            border-color: var(--yellow-deep);
-            box-shadow: 0 0 0 3px rgba(240, 201, 68, 0.18);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(28, 77, 156, 0.18);
+        }
+
+        .form-error {
+            display: none;
+            margin: 0 0 14px;
+            padding: 10px 12px;
+            border: 2px solid var(--accent-red);
+            background: rgba(217, 58, 47, 0.08);
+            color: var(--accent-red);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .form-error.show {
+            display: block;
         }
 
         .open-btn {
@@ -348,8 +363,8 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             content: "";
             position: absolute;
             inset: 0;
-            background: url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80') center/cover no-repeat;
-            filter: saturate(0.8) contrast(1.05);
+            background: url('/oriola.image') center/cover no-repeat;
+            filter: saturate(0.9) contrast(1.05);
         }
 
         .avatar-wrap::after {
@@ -358,7 +373,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background: var(--yellow);
+            background: var(--accent-blue);
             right: 18px;
             top: 18px;
             border: 3px solid #1f1f1f;
@@ -476,8 +491,9 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
                         <h3>Profile access</h3>
                         <p>Verify the student name to open the full profile.</p>
                         <form id="studentForm">
+                            <div id="formError" class="form-error" aria-live="polite"></div>
                             <label for="studentName">Student Name</label>
-                            <input id="studentName" name="studentName" type="text" value="Manuel R. Oriola" placeholder="Enter student name" autocomplete="off">
+                            <input id="studentName" name="studentName" type="text" value="" placeholder="Enter student name" autocomplete="off">
                             <button type="submit" class="open-btn">Open student profile</button>
                         </form>
                     </div>
@@ -564,6 +580,8 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             contact: '09120763768'
         };
 
+        const formError = document.getElementById('formError');
+
         function showProfile(name) {
             const student = name && name.trim() ? name.trim() : defaultStudent.name;
             profileName.textContent = student;
@@ -585,9 +603,29 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             welcomeScreen.classList.add('active');
         }
 
+        function showError(message) {
+            formError.textContent = message;
+            formError.classList.add('show');
+            studentNameInput.focus();
+        }
+
         studentForm.addEventListener('submit', function (event) {
             event.preventDefault();
-            showProfile(studentNameInput.value);
+            const value = studentNameInput.value.trim();
+
+            if (!value) {
+                showError('Please enter the student name to access the profile.');
+                return;
+            }
+
+            if (value.toLowerCase() !== defaultStudent.name.toLowerCase()) {
+                showError('Access denied. Enter the correct student name to continue.');
+                return;
+            }
+
+            formError.textContent = '';
+            formError.classList.remove('show');
+            showProfile(value);
         });
 
         backHomeBtn.addEventListener('click', showHome);
